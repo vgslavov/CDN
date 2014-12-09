@@ -1,0 +1,9 @@
+INDEX VERSION 1.121+/home/tk27f/Desktop/workspace/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+3709066296.index
+2382985088.index
+1372046029.index
+601050827.index
+1352585581.index
+2095493380.index
+1077901118.index
+3747340855.index

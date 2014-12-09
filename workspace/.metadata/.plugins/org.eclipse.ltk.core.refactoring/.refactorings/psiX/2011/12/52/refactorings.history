@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;SharePublishCloud.java&apos; to &apos;psiX/src/net.psiX.test&apos;&#x0A;- Original project: &apos;psiX&apos;&#x0A;- Destination element: &apos;psiX/src/net.psiX.test&apos;&#x0A;- Original element: &apos;net.psiX.test.SharePublishCloud.java&apos;" description="Copy compilation unit" destination="/src&lt;net.psiX.test" element1="/src&lt;net.psiX.test{SharePublishCloud.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1324509931345" units="1" version="1.0"/>
+</session>

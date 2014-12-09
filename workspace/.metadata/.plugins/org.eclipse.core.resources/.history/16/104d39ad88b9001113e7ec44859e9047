@@ -1,0 +1,102 @@
+package net.psiX.test;
+
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import net.psiX.connection.PsiXConnector2;
+
+public class SharePublishCloud3 {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String dataSet = "335_1";
+		File file = new File("/home/tk27f/Desktop/Thesis/Thesis_datas/"
+				+ dataSet);
+
+		String HOSTLIST[] = { 
+				
+				"ec2-107-22-5-126.compute-1.amazonaws.com",
+				"ec2-184-72-206-221.compute-1.amazonaws.com",
+				"ec2-23-22-109-48.compute-1.amazonaws.com",
+				"ec2-23-22-107-233.compute-1.amazonaws.com",
+				"ec2-23-22-244-158.compute-1.amazonaws.com"
+				
+		};
+
+		int docs2Publish[] = { 1, 1, 1, 1, 1, 1, 2, 3, 5, 8, 14, 23, 36, 55,
+				81, 115, 159, 212, 274, 345 };
+
+		int index_count = 0;
+		int currentDocs2Publish = docs2Publish[index_count];
+		int currentDocPublished = 0;
+		
+
+		if (file.isDirectory()) {
+			// Get all files in the directory
+			File[] listOfFiles = file.listFiles();
+
+			PsiXConnector2 psiX = new PsiXConnector2();
+
+			// Iterate through all files in the directory
+			for (int index = 0; index < listOfFiles.length; index++) {
+
+				file = listOfFiles[index];
+
+				if (file.exists()) {
+					try {
+						// Publish
+
+						
+						psiX.publishDoc(
+								file.getPath(),
+								null,
+								"http://" + HOSTLIST[index_count] + ":8080"
+										+ "/documents/" + dataSet + "/"
+										+ file.getName());
+
+
+						// Increase current published document number
+						currentDocPublished++;
+
+						System.out.println("Hostindex: " + (index_count + 1)
+								+ " # To publish: " + currentDocs2Publish
+								+ " # CurrentPublished: " + currentDocPublished
+								+ " # TotalPublished: " + index);
+
+						System.out.println("http://" + HOSTLIST[index_count]
+								+ ":8080" + "/documents/" + dataSet + "/"
+								+ file.getName());
+
+						// Increase index_count and Reset currentDoc published
+						// no.
+						if (currentDocPublished == currentDocs2Publish) {
+
+							index_count++;
+							currentDocs2Publish = docs2Publish[index_count];
+							currentDocPublished = 0;
+
+						}
+
+						// Wait
+						Thread.sleep(15000);
+
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+			
+
+		}
+		
+	}
+
+}

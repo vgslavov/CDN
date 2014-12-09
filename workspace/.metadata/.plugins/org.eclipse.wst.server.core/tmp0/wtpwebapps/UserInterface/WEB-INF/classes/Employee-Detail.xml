@@ -1,0 +1,21 @@
+<?xml version = "1.0" ?>
+<Employee-Detail>
+	<Employee>
+		<Emp_Id> a="dfads dk" k="df f "</Emp_Id>
+		<Emp_Name> Vinod </Emp_Name>
+		<Emp_E-mail> Vinod1@yahoo.com </Emp_E-mail>
+	</Employee>
+
+	<Employee>
+		<Emp_Id> E-002 </Emp_Id>
+		<Emp_Name> Amit </Emp_Name>
+		<Emp_E-mail> Amit2@gmail.com </Emp_E-mail>
+	</Employee>
+
+	<Employee>
+		<Emp_Id> E-003 </Emp_Id>
+		<Emp_Name> Deepak </Emp_Name>
+		<Emp_E-mail> Deepak3@hotmail.com </Emp_E-mail>
+	</Employee>
+
+</Employee-Detail>

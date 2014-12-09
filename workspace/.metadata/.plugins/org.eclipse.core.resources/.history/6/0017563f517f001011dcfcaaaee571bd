@@ -1,0 +1,67 @@
+
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class XQueryReturnObject implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String name = null;
+	private ArrayList<XQueryReturnObject> children = null;
+	private String type = null; // n of node, a for attribute
+	private String query = null; // leaf node has this field
+	private boolean end = false; // leaf ?
+	private boolean root = false; // root ?
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public ArrayList<XQueryReturnObject> getChildren() {
+		return children;
+	}
+
+	public void setChildren(ArrayList<XQueryReturnObject> children) {
+		this.children = children;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	public boolean isEnd() {
+		return end;
+	}
+
+	public void setEnd(boolean end) {
+		this.end = end;
+	}
+
+	public boolean isRoot() {
+		return root;
+	}
+
+	public void setRoot(boolean root) {
+		this.root = root;
+	}
+
+}

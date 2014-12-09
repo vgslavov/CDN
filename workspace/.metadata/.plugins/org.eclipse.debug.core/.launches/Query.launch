@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/Saxon/src/net/sf/saxon/Query.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.sf.saxon.Query"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-qs:&quot;&lt;ROOT&gt;{for $x0 in doc(\&quot;/home/tk27f/documents/Allfilesconverted-withoutduplication/75.xml\&quot;)/ClinicalDocument where $x0/RecordTarget/PatientRole/Patient return &lt;res&gt; {$x0/RecordTarget/PatientRole/ID} &lt;/res&gt;}&lt;/ROOT&gt;&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Saxon"/>
+</launchConfiguration>

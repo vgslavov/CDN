@@ -1,0 +1,10 @@
+#!/bin/bash
+ssh -p 221 umkc_rao0@134.193.130.62 'killall -s ABRT psi lsd adbd syncd; sleep 5; export HOME=/home/umkc_rao0; /home/umkc_rao0/raopr/psix.new/scripts/kickstart 192.168.1.201 > /tmp/junk &'
+
+ssh -p 222 umkc_rao0@134.193.130.62 'killall -s ABRT psi lsd adbd syncd; sleep 5; export HOME=/home/umkc_rao0; /home/umkc_rao0/raopr/psix.new/scripts/kickstart 192.168.1.201 > /tmp/junk &' 
+
+ssh -p 223 umkc_rao0@134.193.130.62 'killall -s ABRT psi lsd adbd syncd; sleep 5; export HOME=/home/umkc_rao0; /home/umkc_rao0/raopr/psix.new/scripts/kickstart 192.168.1.201 > /tmp/junk &' 
+
+ssh -p 224 umkc_rao0@134.193.130.62 'killall -s ABRT psi lsd adbd syncd; sleep 5; export HOME=/home/umkc_rao0; /home/umkc_rao0/raopr/psix.new/scripts/kickstart 192.168.1.201 > /tmp/junk &' 
+
+ssh -p 226 umkc_rao0@134.193.130.62 'killall -s ABRT psi lsd adbd syncd; sleep 5; export HOME=/home/umkc_rao0; /home/umkc_rao0/raopr/psix.new/scripts/kickstart 192.168.1.201 > /tmp/junk &' 

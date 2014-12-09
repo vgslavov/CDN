@@ -1,0 +1,236 @@
+package net.cdn.controller;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.cdn.Objects.XQueryObject;
+import net.cdn.functions.ExecuteQueryOnPeers;
+import net.cdn.functions.QueriesForPeers;
+import net.cdn.functions.Xq2MaximalXp;
+import net.psiX.connection.PsiXConnector;
+
+/**
+ * Servlet implementation class CDNController
+ */
+public class CDNController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public CDNController() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+
+		Thread controllerThread = null;
+		
+		long startTime = System.currentTimeMillis();
+		
+		response.setContentType("text/plain");
+		PrintWriter out = response.getWriter();
+		
+		String xQueryFilePath = "/home/tk27f/Desktop/Thesis/xquery.txt";
+		String maximalXpathFilePath = "/home/tk27f/Desktop/Thesis/maximalXpath.txt";
+		String xQueryShippingFilePath = "/home/tk27f/Desktop/Thesis/xqueryShip.txt";
+		String xQueryLocalFilePath = "/home/tk27f/Desktop/Thesis/local.txt";
+
+		// String xQuery =
+		// "for $x in collection('////kc.umkc.edu/kc-users/home/t/tk27f/Desktop/Thesis/collc1.xml')/W4F_DOC/Actor for $y in collection('////kc.umkc.edu/kc-users/home/t/tk27f/Desktop/Thesis/collc2.xml')/PersonName where $x/Name/FirstName = $y/GivenName and $x/Name = \"tivakar\" and $y/GivenName = \"stud\" and $x/price > 50 return $x/Filmograph/Movie/Title";
+		// String xQuery =
+		// "for $x in collection('////kc.umkc.edu/kc-users/home/t/tk27f/Desktop/Thesis/collc1.xml')/W4F_DOC/Actor for $y in collection('////kc.umkc.edu/kc-users/home/t/tk27f/Desktop/Thesis/collc1.xml')/W4F_DOC/Actor for $z in collection('////kc.umkc.edu/kc-users/home/t/tk27f/Desktop/Thesis/collc1.xml')/W4F_DOC/Actor  return {$x/Filmography/Movie/Title} {$x/Filmography} {$y/Movie/Title} {$y/some} {$y/Movie/Title/one} {$y/Movie/song} {$y/hee/Movie} {$y/movie/tiva/ra/stupid} {$z/tivakar} {$y/t/hey/this/that} {$x/Filmography/tew}";
+		// String xQuery =
+		// "for $x in collection('////kc.umkc.edu/kc-users/home/t/tk27f/Desktop/Thesis/collc1.xml')/W4F_DOC/Actor for $y in collection('////kc.umkc.edu/kc-users/home/t/tk27f/Desktop/Thesis/collc1.xml')/W4F_DOC/Actor for $z in collection('////kc.umkc.edu/kc-users/home/t/tk27f/Desktop/Thesis/collc1.xml')/W4F_DOC/Actor  return {$y/Movie/Title} {$y/some} {$y/Movie/Title/one} {$y/Movie/song} {$y/hee/Movie} {$y/movie/tiva/ra/stupid} {$y/t/hey/this/that}";
+		// String xQuery =
+		// "for $x in collection(\"something\")/W4F_DOC/Actor for $y in collection(\"something\")/W4F_DOC/Actor where  $x/Filmography/Movie/Title = $y/Filmography/Movie/Title return $x/Name/FirstName";
+
+		// String xQuery =
+		// "for $x in collection(\"cdn\")/ClinicalDocument return $x//Patient";
+
+		// String xQuery =
+		// "for $x in collection(\"cdn\")/ClinicalDocument/RecordTarget/PatientRole[Patient=\"M\"] for $y in collection(\"cdn\")/ClinicalDocument/structuredBody/section/observation/code/code_2407009 return $x";
+
+		// String xQuery =
+		// "for $x in collection(\"cdn\")/ClinicalDocument[RecordTarget/PatientRole/Patient][structuredBody/section/procedure/code/code_160303001] return $x/RecordTarget/PatientRole/Patient";
+
+		String xQuery = "for $x in collection(\"cdn\")/ClinicalDocument where $x/RecordTarget/PatientRole/Patient = \"M\""
+				+ " or " + "$x//observation/code/code_2407009 " +
+				// "" +
+				"return $x/RecordTarget/PatientRole/ID";
+
+		int xQueryNo = 5;
+
+		xQuery = getXquery(xQueryNo,xQueryFilePath);
+
+		// String xQuery =
+		// "for $x in collection(\"CDN\")/ClinicalDocument where $x/RecordTarget/PatientRole/Patient = \"M\" and "
+		// +
+		// "$x//observation/code[@codeSystem=\"2.16.840.1.113883.6.69\"][@code = \"315058005\"] or "
+		// +
+		// "$x//procedure/code[@codeSystem=\"2.16.840.1.113883.6.69\"][@code = \"315058005\"]"
+		// +
+		// "return $x/RecordTarget/PatientRole/ID";
+
+		// String xQuery =
+		// "for $x in doc('psix/XMLDocs/actors.dtd/actors.dtd.1.xml') return $x";
+		// Creating XQueryObject - which contains all the information
+
+		System.out.println("##########");
+		System.out.println("# XQUERY #");
+		System.out.println("##########\n");
+
+		System.out.println(xQuery);
+
+		XQueryObject xQueryObj = new XQueryObject();
+		xQueryObj.setxQuery(xQuery);// Setting original XQuery
+
+		Xq2MaximalXp xq2MaxXpath = new Xq2MaximalXp();
+		// Parse Xquery
+//		ArrayList<String> xQuerySplits = xq2MaxXpath.getEachLines(xQueryObj);
+		// Get Maximal Xpath
+//		HashMap<String, String> hMapVarNMaxXpath = xq2MaxXpath
+//				.getMaxXpath(xQuerySplits);
+
+		HashMap<String, ArrayList<String>> hMapVarNMaxXpath = xq2MaxXpath.getMaxXpath(xQueryNo,maximalXpathFilePath);
+		
+//		System.out
+//				.println("\n**************************************************************\n");
+		Iterator<String> varIter = hMapVarNMaxXpath.keySet().iterator();
+		String var = null;
+		while (varIter.hasNext()) {
+			var = varIter.next();
+			System.out.println("##################################");
+			System.out.println("# MAXIMAL XPATH FOR VARIABLE " + var + " #");
+			System.out.println("##################################\n");
+
+			System.out.println(hMapVarNMaxXpath.get(var));
+			System.out.println("");
+		}
+
+//		System.out
+//				.println("**************************************************************\n");
+
+		// Set in XQuery Object
+		xQueryObj.sethMapVarNMaxXpath(hMapVarNMaxXpath);
+
+		long startPsixTime = System.currentTimeMillis();
+		
+		// Creating PsiXConnector Object to connect to psiX and getting
+		// hostnames
+		// and pathnames
+		PsiXConnector psiXConn = new PsiXConnector();
+		xQueryObj = psiXConn.getHostNPathForVarLocateMaxXpath(xQueryObj);
+
+		long endPsixTime = System.currentTimeMillis();
+		
+		// Forming queries for peers
+//		QueriesForPeers qP = new QueriesForPeers();
+//		xQueryObj = qP.getFLOWRObjforVariablesXQuery(xQueryObj);
+
+		long startShippedTime = System.currentTimeMillis();
+		// Forming query strings for peers
+
+		/* Without Thread
+		ExecuteQueryOnPeers exeQPeers = new ExecuteQueryOnPeers();
+		exeQPeers.executeQueriesOnAllPeers(xQueryObj,xQueryNo,xQueryShippingFilePath);
+		 */
+		
+		controllerThread = Thread.currentThread();
+		ExecuteQueryOnPeers exeQPeers = new ExecuteQueryOnPeers(controllerThread);
+		exeQPeers.executeQueriesOnAllPeers(xQueryObj,xQueryNo,xQueryShippingFilePath);
+		
+		long endShippedTime = System.currentTimeMillis();
+		
+		long startLocalExecTime = System.currentTimeMillis();
+		
+		exeQPeers.executeQueryLocal(xQueryObj, xQueryNo, xQueryLocalFilePath);
+
+		long endLocalExecTime = System.currentTimeMillis();
+		
+		try {
+			FileInputStream fstream = new FileInputStream("tivakar.txt");
+			DataInputStream in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String str;
+			while ((str = br.readLine()) != null) {
+				out.println(str);
+			}
+			in.close();
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+
+		long endTime = System.currentTimeMillis();
+		
+		out.println("\nTime to get response from psiX : "+ ((endPsixTime-startPsixTime)/1000.0) + " secs");
+		out.println("\nTime to ship and process the query : "+ ((endShippedTime-startShippedTime)/1000.0) + " secs");
+		out.println("\nTime to process the query locally : "+ ((endLocalExecTime-startLocalExecTime)/1000.0) + " secs");
+		out.println("\nTotal time : "+ ((endTime-startTime)/1000.0) + " secs");
+		out.flush();
+		out.close();
+
+	}
+
+	public static String getXquery(int xQueryNo, String xQueryFilePath) {
+
+		String strLine = null;
+		FileInputStream fstream = null;
+		DataInputStream in = null;
+		BufferedReader br = null;
+
+		int lineCount = 1;
+
+		try {
+			// Open the file that is the first
+			// command line parameter
+			fstream = new FileInputStream(xQueryFilePath);
+			// Get the object of DataInputStream
+			in = new DataInputStream(fstream);
+			br = new BufferedReader(new InputStreamReader(in));
+
+			// Read File Line By Line
+			while (((strLine = br.readLine()) != null) && lineCount != xQueryNo) {
+				lineCount++;
+			}
+
+			// Close the input stream
+			in.close();
+
+		} catch (Exception e) {// Catch exception if any
+			System.err.println("Error: " + e.getMessage());
+		}
+
+		return strLine;
+
+	}
+
+}

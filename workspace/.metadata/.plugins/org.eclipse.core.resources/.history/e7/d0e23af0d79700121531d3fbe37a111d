@@ -1,0 +1,117 @@
+package net.psiX.test;
+
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import net.psiX.connection.PsiXConnector2;
+
+public class SharePublishCloud3 {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String dataSet = "7500";
+		File file = new File("/home/tk27f/Desktop/Thesis/Thesis_datas/"
+				+ dataSet);
+
+		String HOSTLIST[] = { 
+				"ec2-54-234-239-134.compute-1.amazonaws.com",
+				"ec2-54-224-115-44.compute-1.amazonaws.com",
+				"ec2-54-234-23-121.compute-1.amazonaws.com",
+				"ec2-54-224-102-44.compute-1.amazonaws.com",
+				"ec2-50-16-41-21.compute-1.amazonaws.com"			
+		};
+
+		int docs2Publish[] = {
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100
+				};
+
+		int index_count = 0;
+		int currentDocs2Publish = docs2Publish[index_count];
+		int currentDocPublished = 0;
+		int count=0;
+		
+
+		if (file.isDirectory()) {
+			// Get all files in the directory
+			File[] listOfFiles = file.listFiles();
+
+			PsiXConnector2 psiX = new PsiXConnector2();
+
+			// Iterate through all files in the directory
+			for (int index = 0; index < listOfFiles.length; index++) {
+
+				file = listOfFiles[index];
+
+				if (file.exists()) {
+					try {
+						// Publish
+
+						
+						psiX.publishDoc(
+								file.getPath(),
+								null,
+								"http://" + HOSTLIST[index_count] + ":8080"
+										+ "/documents/" + dataSet + "/"
+										+ file.getName(),
+								count);
+						count++;
+
+						// Increase current published document number
+						currentDocPublished++;
+
+						System.out.println("Hostindex: " + (index_count + 1)
+								+ " # To publish: " + currentDocs2Publish
+								+ " # CurrentPublished: " + currentDocPublished
+								+ " # TotalPublished: " + index);
+
+						System.out.println("http://" + HOSTLIST[index_count]
+								+ ":8080" + "/documents/" + dataSet + "/"
+								+ file.getName());
+
+						// Increase index_count and Reset currentDoc published
+						// no.
+						if (currentDocPublished == currentDocs2Publish) {
+
+							index_count++;
+							currentDocs2Publish = docs2Publish[index_count];
+							currentDocPublished = 0;
+
+						}
+
+						// Wait
+						Thread.sleep(10000);
+
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+			
+
+		}
+		
+	}
+
+}

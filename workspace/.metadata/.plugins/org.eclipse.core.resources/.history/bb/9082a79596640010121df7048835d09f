@@ -1,0 +1,72 @@
+package test;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Properties;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import net.sf.saxon.Configuration;
+import net.sf.saxon.query.DynamicQueryContext;
+import net.sf.saxon.query.StaticQueryContext;
+import net.sf.saxon.query.XQueryExpression;
+
+/**
+ * Servlet implementation class HelloWorld
+ */
+public class HelloWorld extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public HelloWorld() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	@SuppressWarnings("deprecation")
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+
+		Configuration config = new Configuration();
+		StaticQueryContext staticContext = config.newStaticQueryContext();
+
+		try{
+		XQueryExpression exp = staticContext.compileQuery("for $x in doc('books.xml')/catalog/book");
+		DynamicQueryContext dynamicContext = 
+		        new DynamicQueryContext(config);
+		dynamicContext.setContextNode(
+		        config.buildDocument(
+		                new StreamSource(new File("books.xml"))));
+		Properties props = new Properties();
+		props.setProperty(OutputKeys.METHOD, "xml");
+		props.setProperty(OutputKeys.INDENT, "no");
+		exp.run(dynamicContext, new StreamResult(System.out), props);
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("exce[topm");
+			e.printStackTrace();
+		}
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+}

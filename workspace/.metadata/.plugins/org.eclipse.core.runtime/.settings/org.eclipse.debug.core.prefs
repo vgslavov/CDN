@@ -1,0 +1,4 @@
+#Fri Sep 02 21:23:40 CDT 2011
+prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<watchExpressions>\n<expression enabled\="true" text\="returnString"/>\n<expression enabled\="true" text\="servletConnection.getContentLength()"/>\n<expression enabled\="true" text\="xQueryForHost"/>\n<expression enabled\="true" text\="xQueryForHost"/>\n<expression enabled\="true" text\="iterAllHost.next()"/>\n</watchExpressions>\n
+eclipse.preferences.version=1
+org.eclipse.debug.core.PREF_BREAKPOINT_MANAGER_ENABLED_STATE=true

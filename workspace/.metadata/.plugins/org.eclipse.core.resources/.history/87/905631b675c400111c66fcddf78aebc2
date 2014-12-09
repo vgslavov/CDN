@@ -1,0 +1,187 @@
+package net.psiX.test;
+
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import net.psiX.connection.PsiXConnector2;
+
+public class SharePublishCloud3 {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String dataSet = "7500";
+		File file = new File("/home/tk27f/Desktop/Thesis/Thesis_datas/"
+				+ dataSet);
+
+		String HOSTLIST[] = { 
+				"ec2-107-21-90-109.compute-1.amazonaws.com",
+				"ec2-23-22-193-190.compute-1.amazonaws.com",
+				"ec2-23-22-246-167.compute-1.amazonaws.com",
+				"ec2-23-20-27-44.compute-1.amazonaws.com",
+				"ec2-23-22-126-67.compute-1.amazonaws.com",
+				"ec2-107-22-118-47.compute-1.amazonaws.com",
+				"ec2-23-22-218-230.compute-1.amazonaws.com",
+				"ec2-23-21-25-32.compute-1.amazonaws.com",
+				"ec2-23-22-115-211.compute-1.amazonaws.com",
+				"ec2-204-236-210-128.compute-1.amazonaws.com",
+				"ec2-23-20-132-14.compute-1.amazonaws.com",
+				"ec2-184-73-55-141.compute-1.amazonaws.com",
+				"ec2-204-236-214-123.compute-1.amazonaws.com",
+				"ec2-23-22-91-172.compute-1.amazonaws.com",
+				"ec2-50-19-129-39.compute-1.amazonaws.com",
+				"ec2-23-20-30-0.compute-1.amazonaws.com",
+				"ec2-50-16-159-62.compute-1.amazonaws.com",
+				"ec2-174-129-160-49.compute-1.amazonaws.com",
+				"ec2-174-129-53-111.compute-1.amazonaws.com",
+				"ec2-50-16-11-130.compute-1.amazonaws.com",
+				"ec2-184-73-105-56.compute-1.amazonaws.com",
+				"ec2-23-22-101-20.compute-1.amazonaws.com",
+				"ec2-50-16-88-84.compute-1.amazonaws.com",
+				"ec2-174-129-190-123.compute-1.amazonaws.com",
+				"ec2-23-22-236-117.compute-1.amazonaws.com",
+				"ec2-50-17-9-69.compute-1.amazonaws.com",
+				"ec2-50-16-41-135.compute-1.amazonaws.com",
+				"ec2-184-72-134-228.compute-1.amazonaws.com",
+				"ec2-50-16-17-88.compute-1.amazonaws.com",
+				"ec2-184-73-4-105.compute-1.amazonaws.com",
+				"ec2-23-20-250-122.compute-1.amazonaws.com",
+				"ec2-107-22-75-145.compute-1.amazonaws.com",
+				"ec2-23-22-80-246.compute-1.amazonaws.com",
+				"ec2-23-22-232-27.compute-1.amazonaws.com",
+				"ec2-174-129-185-161.compute-1.amazonaws.com",
+				"ec2-23-22-207-198.compute-1.amazonaws.com",
+				"ec2-174-129-118-88.compute-1.amazonaws.com",
+				"ec2-23-22-227-203.compute-1.amazonaws.com",
+				"ec2-107-22-110-74.compute-1.amazonaws.com",
+				"ec2-23-22-148-190.compute-1.amazonaws.com",
+				"ec2-50-19-195-102.compute-1.amazonaws.com",
+				"ec2-204-236-200-147.compute-1.amazonaws.com",
+				"ec2-184-72-183-2.compute-1.amazonaws.com",
+				"ec2-174-129-49-129.compute-1.amazonaws.com",
+				"ec2-23-22-237-6.compute-1.amazonaws.com",
+				"ec2-23-22-137-214.compute-1.amazonaws.com",
+				"ec2-107-22-2-4.compute-1.amazonaws.com",
+				"ec2-23-22-103-26.compute-1.amazonaws.com",
+				"ec2-23-22-71-154.compute-1.amazonaws.com",
+				"ec2-67-202-45-180.compute-1.amazonaws.com",
+				"ec2-107-22-67-132.compute-1.amazonaws.com",
+				"ec2-50-17-6-251.compute-1.amazonaws.com",
+				"ec2-23-20-62-211.compute-1.amazonaws.com",
+				"ec2-184-73-19-76.compute-1.amazonaws.com",
+				"ec2-23-20-164-123.compute-1.amazonaws.com",
+				"ec2-23-22-245-134.compute-1.amazonaws.com",
+				"ec2-23-22-245-123.compute-1.amazonaws.com",
+				"ec2-204-236-240-189.compute-1.amazonaws.com",
+				"ec2-174-129-118-124.compute-1.amazonaws.com",
+				"ec2-23-22-144-150.compute-1.amazonaws.com",
+				"ec2-23-22-148-172.compute-1.amazonaws.com",
+				"ec2-23-22-194-141.compute-1.amazonaws.com",
+				"ec2-50-16-166-231.compute-1.amazonaws.com",
+				"ec2-174-129-140-165.compute-1.amazonaws.com",
+				"ec2-184-72-84-17.compute-1.amazonaws.com",
+				"ec2-107-22-6-236.compute-1.amazonaws.com",
+				"ec2-23-22-220-214.compute-1.amazonaws.com",
+				"ec2-23-20-70-233.compute-1.amazonaws.com",
+				"ec2-23-22-255-244.compute-1.amazonaws.com",
+				"ec2-204-236-200-253.compute-1.amazonaws.com",
+				"ec2-174-129-140-24.compute-1.amazonaws.com",
+				"ec2-184-72-168-56.compute-1.amazonaws.com",
+				"ec2-23-20-211-233.compute-1.amazonaws.com",
+				"ec2-23-22-32-252.compute-1.amazonaws.com",
+				"ec2-204-236-209-246.compute-1.amazonaws.com"			
+		};
+
+		int docs2Publish[] = {
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100
+				};
+
+		int index_count = 0;
+		int currentDocs2Publish = docs2Publish[index_count];
+		int currentDocPublished = 0;
+		int count=0;
+		
+
+		if (file.isDirectory()) {
+			// Get all files in the directory
+			File[] listOfFiles = file.listFiles();
+
+			PsiXConnector2 psiX = new PsiXConnector2();
+
+			// Iterate through all files in the directory
+			for (int index = 0; index < listOfFiles.length; index++) {
+
+				file = listOfFiles[index];
+
+				if (file.exists()) {
+					try {
+						// Publish
+
+						
+						psiX.publishDoc(
+								file.getPath(),
+								null,
+								"http://" + HOSTLIST[index_count] + ":8080"
+										+ "/documents/" + dataSet + "/"
+										+ file.getName(),
+								count);
+						count++;
+
+						// Increase current published document number
+						currentDocPublished++;
+
+						System.out.println("Hostindex: " + (index_count + 1)
+								+ " # To publish: " + currentDocs2Publish
+								+ " # CurrentPublished: " + currentDocPublished
+								+ " # TotalPublished: " + index);
+
+						System.out.println("http://" + HOSTLIST[index_count]
+								+ ":8080" + "/documents/" + dataSet + "/"
+								+ file.getName());
+
+						// Increase index_count and Reset currentDoc published
+						// no.
+						if (currentDocPublished == currentDocs2Publish) {
+
+							index_count++;
+							currentDocs2Publish = docs2Publish[index_count];
+							currentDocPublished = 0;
+
+						}
+
+						// Wait
+						Thread.sleep(15000);
+
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+			
+
+		}
+		
+	}
+
+}

@@ -1,0 +1,45 @@
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
+public class FileDuplication {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String path = "/home/tivakar/Desktop/Thesis/HL7/Allfiles";
+
+		String fileName = null;
+
+		File folder = new File(path);
+		File[] listOfFiles = folder.listFiles();
+		File file = null;
+		File fileDup = null;
+
+		for (int index = 0; index < listOfFiles.length; index++) {
+
+			file = listOfFiles[index];
+			fileName = file.getName().replaceAll(".xml", "");
+
+			for (int i = 1; i <= 100; i++) {
+
+				fileDup = new File(path + "/" + fileName + "_" + i + ".xml");
+
+				// duplicate
+				try {
+					FileUtils.copyFile(file, fileDup);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		}
+
+	}
+
+}

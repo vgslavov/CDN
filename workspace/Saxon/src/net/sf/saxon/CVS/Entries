@@ -1,0 +1,54 @@
+/AugmentedSource.java/1.1/Tue Aug 10 17:26:47 2010//
+/CollectionURIResolver.java/1.1/Tue Aug 10 17:26:47 2010//
+/Configuration.java/1.1/Tue Aug 10 17:26:47 2010//
+/Controller.java/1.1/Tue Aug 10 17:26:47 2010//
+/FeatureKeys.java/1.1/Tue Aug 10 17:26:47 2010//
+/Filter.java/1.1/Tue Aug 10 17:26:47 2010//
+/IdentityTransformer.java/1.1/Tue Aug 10 17:26:47 2010//
+/IdentityTransformerHandler.java/1.1/Tue Aug 10 17:26:47 2010//
+/NonDelegatingURIResolver.java/1.1/Tue Aug 10 17:26:47 2010//
+/OutputURIResolver.java/1.1/Tue Aug 10 17:26:47 2010//
+/Platform.java/1.1/Tue Aug 10 17:26:47 2010//
+/PreparedStylesheet.java/1.1/Tue Aug 10 17:26:47 2010//
+/Query.java/1.4/Thu Nov 18 17:06:24 2010//
+/QueryDataShipping.java/1.2/Mon Apr 18 19:33:50 2011//
+/RelativeURIResolver.java/1.1/Tue Aug 10 17:26:47 2010//
+/SourceResolver.java/1.1/Tue Aug 10 17:26:47 2010//
+/StandardErrorHandler.java/1.1/Tue Aug 10 17:26:47 2010//
+/StandardErrorListener.java/1.1/Tue Aug 10 17:26:47 2010//
+/StandardURIResolver.java/1.1/Tue Aug 10 17:26:47 2010//
+/TemplatesHandlerImpl.java/1.1/Tue Aug 10 17:26:47 2010//
+/Transform.java/1.1/Tue Aug 10 17:26:47 2010//
+/TransformerFactoryImpl.java/1.1/Tue Aug 10 17:26:47 2010//
+/TransformerHandlerImpl.java/1.1/Tue Aug 10 17:26:47 2010//
+/Version.java/1.1/Tue Aug 10 17:26:47 2010//
+D/ant////
+D/charcode////
+D/codenorm////
+D/dom////
+D/event////
+D/evpull////
+D/expr////
+D/functions////
+D/instruct////
+D/java////
+D/number////
+D/om////
+D/option////
+/package.html/1.1/Tue Aug 10 17:26:47 2010//
+D/pattern////
+D/pull////
+D/query////
+D/regex////
+D/s9api////
+D/sort////
+D/style////
+D/sxpath////
+D/tinytree////
+D/trace////
+D/trans////
+D/tree////
+D/type////
+D/value////
+D/xpath////
+D/xqj////

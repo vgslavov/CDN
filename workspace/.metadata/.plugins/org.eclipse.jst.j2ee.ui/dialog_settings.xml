@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="true" key="J2EE_EXPORT_OVERWRITE"/>
+	<item value="false" key="J2EE_EXPORT_SOURCE"/>
+	<list key="J2EE_EXPORT_JST_WEB">
+		<item value="/home/tk27f/ec2/UserInterface.war"/>
+		<item value="/home/tk27f/ec2/XquerySaxon.war"/>
+		<item value="/home/tk27f/Desktop/UserInterface.war"/>
+		<item value="/home/tk27f/Desktop/new/UserInterface.war"/>
+		<item value="/home/tk27f/Desktop/venu/war_20instances/Attempt2/UserInterface.war"/>
+	</list>
+	<list key="MRU_RUNTIME_STORE">
+		<item value="Apache Tomcat v6.0 (3)"/>
+		<item value="a"/>
+		<item value="Apache Tomcat v6.0"/>
+	</list>
+</section>

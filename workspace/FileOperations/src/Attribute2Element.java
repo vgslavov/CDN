@@ -1,0 +1,175 @@
+import java.io.File;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+public class Attribute2Element {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String path = "/home/tk27f/Desktop/Thesis/Thesis_datas/out/";
+
+		File folder = new File(path);
+		File[] listOfFiles = folder.listFiles();
+		File file = null;
+
+		for (int index = 0; index < listOfFiles.length; index++) {
+
+			file = listOfFiles[index];
+			if (file.exists()) {
+				try {
+					// Create a factory
+					DocumentBuilderFactory factory = DocumentBuilderFactory
+							.newInstance();
+					// Use document builder factory
+					DocumentBuilder builder = factory.newDocumentBuilder();
+					// Parse the document
+					Document doc = builder.parse(file.getPath());
+					TransformerFactory tranFact = TransformerFactory
+							.newInstance();
+					Transformer transfor = tranFact.newTransformer();
+
+					transfor.setOutputProperty(OutputKeys.METHOD, "xml");
+
+					String codeValue = null;
+					String codeSystemValue = null;
+
+					Element elementAdd = null;
+					Element elementAddValue = null;
+
+					NodeList list = doc.getElementsByTagName("*");
+
+					for (int i = 0; i < list.getLength(); i++) {
+						// Get element
+						Element element = (Element) list.item(i);
+
+						// For ApplicationNumber attribute
+						// Move as an element
+						if (element.hasAttribute("ApplicationNumber")) {
+
+							codeValue = element
+									.getAttribute("ApplicationNumber");
+
+							if (codeValue != "") {
+								// create code as an element
+								elementAdd = doc
+										.createElement("ApplicationNumber");
+
+								// replace illegal characters and add code_
+								// before
+								// code value
+								codeValue = codeValue.replace('-', '_');
+								codeValue = "ApplicationNumber".concat("_"
+										+ codeValue);
+
+								// create code value as an element
+								elementAddValue = doc.createElement(codeValue);
+
+								elementAdd.insertBefore(elementAddValue,
+										elementAdd.getLastChild());
+
+								element.insertBefore(elementAdd,
+										element.getLastChild());
+							}
+
+							// remove ApplicationNumber attribute
+							element.removeAttribute("ApplicationNumber");
+
+						}
+
+						// For codeSystem attribute
+						// Move as an element
+						if (element.hasAttribute("codeSystem")) {
+
+							codeSystemValue = element
+									.getAttribute("codeSystem");
+
+							if (codeSystemValue != "") {
+
+								// create code as an element
+								elementAdd = doc.createElement("codeSystem");
+
+								// replace illegal characters and add code_
+								// before
+								// code value
+								codeSystemValue = codeSystemValue.replace('.',
+										'_');
+								codeSystemValue = "codeSystem".concat("_"
+										+ codeSystemValue);
+
+								// create code value as an element
+								elementAddValue = doc
+										.createElement(codeSystemValue);
+
+								elementAdd.insertBefore(elementAddValue,
+										elementAdd.getLastChild());
+
+								element.insertBefore(elementAdd,
+										element.getLastChild());
+
+							}
+
+							element.removeAttribute("codeSystem");
+						}
+
+						// For code attribute
+						// Move as an element
+						if (element.hasAttribute("code")) {
+
+							codeValue = element.getAttribute("code");
+
+							if (codeValue != "") {
+								// create code as an element
+								elementAdd = doc.createElement("code");
+
+								// replace illegal characters and add code_
+								// before
+								// code value
+								codeValue = codeValue.replace('-', '_');
+								codeValue = "code".concat("_" + codeValue);
+
+								// create code value as an element
+								elementAddValue = doc.createElement(codeValue);
+
+								elementAdd.insertBefore(elementAddValue,
+										elementAdd.getLastChild());
+
+								element.insertBefore(elementAdd,
+										element.getLastChild());
+							}
+
+							// remove code attribute
+							element.removeAttribute("code");
+
+						}
+
+					}
+
+					Source src = new DOMSource(doc);
+					Result dest = new StreamResult(
+							new File(file.getPath()));
+					transfor.transform(src, dest);
+
+				} catch (Exception e) {
+					System.err.println(e);
+				}
+
+			}
+		}
+	}
+}

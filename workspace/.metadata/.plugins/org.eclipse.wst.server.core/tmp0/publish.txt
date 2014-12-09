@@ -1,0 +1,9 @@
+#Tomcat publish data
+#Sat Dec 10 13:01:33 CST 2011
+org.eclipse.jst.jee.server\:/binary\:/home/tk27f/Desktop/workspace/UserInterface/WebContent/lib/xom-1.2.1.jar=lib/xom-1.2.1.jar
+org.eclipse.jst.jee.server\:/binary\:/home/tk27f/Desktop/workspace/XquerySaxon/WebContent/WEB-INF/lib/saxon9he.jar=WEB-INF/lib/saxon9he.jar
+org.eclipse.jst.jee.server\:/binary\:/home/tk27f/Desktop/workspace/UserInterface/WebContent/WEB-INF/lib/ant.jar=WEB-INF/lib/ant.jar
+org.eclipse.jst.jee.server\:/binary\:/home/tk27f/Desktop/workspace/UserInterface/WebContent/WEB-INF/lib/xom-1.2.1.jar=WEB-INF/lib/xom-1.2.1.jar
+org.eclipse.jst.jee.server\:/binary\:/home/tk27f/Desktop/workspace/UserInterface/WebContent/lib/ant.jar=lib/ant.jar
+org.eclipse.jst.jee.server\:/binary\:/home/tk27f/Desktop/workspace/UserInterface/WebContent/WEB-INF/lib/saxon9he.jar=WEB-INF/lib/saxon9he.jar
+org.eclipse.jst.jee.server\:/binary\:/home/tk27f/Desktop/workspace/UserInterface/WebContent/lib/saxon9he.jar=lib/saxon9he.jar

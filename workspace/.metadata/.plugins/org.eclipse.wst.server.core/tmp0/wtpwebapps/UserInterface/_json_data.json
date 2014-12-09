@@ -1,0 +1,21 @@
+[
+	{"data":"Breast Cancer","attr":{"id":""}},
+	{"data":"Colon Cancer", "children": [
+											{"data":"Incidence","attr":{"id":"forms/ColonCancer/Incidence/incidenceForm.html"}},
+											{"data":"Treatment", "children": [
+																			 	{"data":"Chemotheraphy","attr":{"id":""}},
+																			 	{"data":"Surgery","attr":{"id":""}},
+																			 	{"data":"Radiation","attr":{"id":""}},
+																			 	{"data":"Immune Theraphy","attr":{"id":""}},
+																			 	{"data":"Adjuvant","attr":{"id":""}},
+																			 	{"data":"Neo Adjuvant","attr":{"id":""}}
+																			 ],"attr":{"id":""},"state":"closed"},
+											{"data":"Survival Rate","attr":{"id":""}},
+											{"data":"Relapse","attr":{"id":""}}
+										],"attr":{"id":""},"state":"closed"},
+	{"data":"Lung Cancer","attr":{"id":""}},
+	{"data":"Ovarian Cancer","attr":{"id":""}},
+	{"data":"Prostate Cancer","attr":{"id":""}},
+	{"data":"Pancreatic Cancer","attr":{"id":""}}
+  									  
+]

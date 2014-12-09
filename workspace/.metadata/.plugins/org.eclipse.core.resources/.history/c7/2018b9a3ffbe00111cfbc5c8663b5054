@@ -1,0 +1,127 @@
+package net.psiX.test;
+
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import net.psiX.connection.PsiXConnector2;
+
+public class SharePublishCloud3 {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String dataSet = "new/keyword2.5/";
+		File file = new File("/home/tk27f/Desktop/Thesis/Thesis_datas/"
+				+ dataSet);
+
+		String HOSTLIST[] = { 
+				"ec2-174-129-160-56.compute-1.amazonaws.com",
+				"ec2-50-17-6-251.compute-1.amazonaws.com",
+				"ec2-23-20-62-211.compute-1.amazonaws.com",
+				"ec2-184-73-19-76.compute-1.amazonaws.com",
+				"ec2-23-20-164-123.compute-1.amazonaws.com",
+				"ec2-23-22-245-134.compute-1.amazonaws.com",
+				"ec2-23-22-245-123.compute-1.amazonaws.com",
+				"ec2-204-236-240-189.compute-1.amazonaws.com",
+				"ec2-174-129-118-124.compute-1.amazonaws.com",
+				"ec2-23-22-144-150.compute-1.amazonaws.com",
+				"ec2-23-22-148-172.compute-1.amazonaws.com",
+				"ec2-23-22-194-141.compute-1.amazonaws.com",
+				"ec2-50-16-166-231.compute-1.amazonaws.com",
+				"ec2-174-129-140-165.compute-1.amazonaws.com",
+				"ec2-184-72-84-17.compute-1.amazonaws.com",
+				"ec2-107-22-6-236.compute-1.amazonaws.com",
+				"ec2-23-22-220-214.compute-1.amazonaws.com",
+				"ec2-23-20-70-233.compute-1.amazonaws.com",
+				"ec2-23-22-255-244.compute-1.amazonaws.com",
+				"ec2-204-236-200-253.compute-1.amazonaws.com",
+				"ec2-174-129-140-24.compute-1.amazonaws.com",
+				"ec2-184-72-168-56.compute-1.amazonaws.com",
+				"ec2-23-20-211-233.compute-1.amazonaws.com",
+				"ec2-23-22-32-252.compute-1.amazonaws.com",
+				"ec2-204-236-209-246.compute-1.amazonaws.com"			
+		};
+
+		int docs2Publish[] = {
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100,
+				100,100,100,100,100
+				};
+
+		int index_count = 0;
+		int currentDocs2Publish = docs2Publish[index_count];
+		int currentDocPublished = 0;
+		int count=0;
+		
+
+		if (file.isDirectory()) {
+			// Get all files in the directory
+			File[] listOfFiles = file.listFiles();
+
+			PsiXConnector2 psiX = new PsiXConnector2();
+
+			// Iterate through all files in the directory
+			for (int index = 0; index < listOfFiles.length; index++) {
+
+				file = listOfFiles[index];
+
+				if (file.exists()) {
+					try {
+						// Publish
+
+						
+						psiX.publishDoc(
+								file.getPath(),
+								null,
+								"http://" + HOSTLIST[index_count] + ":8080"
+										+ "/documents/" + dataSet + "/"
+										+ file.getName(),
+								count);
+						count++;
+
+						// Increase current published document number
+						currentDocPublished++;
+
+						System.out.println("Hostindex: " + (index_count + 1)
+								+ " # To publish: " + currentDocs2Publish
+								+ " # CurrentPublished: " + currentDocPublished
+								+ " # TotalPublished: " + index);
+
+						System.out.println("http://" + HOSTLIST[index_count]
+								+ ":8080" + "/documents/" + dataSet + "/"
+								+ file.getName());
+
+						// Increase index_count and Reset currentDoc published
+						// no.
+						if (currentDocPublished == currentDocs2Publish) {
+
+							index_count++;
+							currentDocs2Publish = docs2Publish[index_count];
+							currentDocPublished = 0;
+
+						}
+
+						// Wait
+						Thread.sleep(15000);
+
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+			
+
+		}
+		
+	}
+
+}

@@ -1,0 +1,296 @@
+package net.psiX.connection;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.MultipartPostMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.httpclient.methods.multipart.StringPart;
+
+import net.psiX.http.ClientHttpRequest;
+import net.psiX.objects.PsiXObject;
+import java.util.*;
+public class PsiXConnector2 {
+
+	/**
+	 * @author Tivakar
+	 *         This method publishDoc is used for publishing the document along
+	 *         with document id
+	 * @throws FileNotFoundException 
+	 */
+	
+	public String publishDoc(String xmlfile, String xmldtd, String docid, int count) throws FileNotFoundException {
+
+		HttpClient client = new HttpClient();
+		client.getParams().setParameter("http.useragent", "Test Client");
+		BufferedReader br = null;
+		
+		//Random generator = new Random();
+		//int choice = generator.nextInt(server.length);
+
+		String instance="";
+		String[] server ={			
+				"ec2-50-19-128-222.compute-1.amazonaws.com",
+				"ec2-54-235-52-153.compute-1.amazonaws.com",
+				"ec2-54-235-237-219.compute-1.amazonaws.com",
+				"ec2-54-234-160-62.compute-1.amazonaws.com",
+				"ec2-50-17-47-23.compute-1.amazonaws.com",
+				"ec2-50-16-142-92.compute-1.amazonaws.com",
+				"ec2-50-16-25-121.compute-1.amazonaws.com",
+				"ec2-54-234-251-157.compute-1.amazonaws.com",
+				"ec2-54-235-59-248.compute-1.amazonaws.com",
+				"ec2-50-19-157-245.compute-1.amazonaws.com",
+				"ec2-184-72-86-140.compute-1.amazonaws.com",
+				"ec2-184-72-78-246.compute-1.amazonaws.com",
+				"ec2-50-16-131-14.compute-1.amazonaws.com",
+				"ec2-54-243-19-79.compute-1.amazonaws.com",
+				"ec2-54-234-191-211.compute-1.amazonaws.com",
+				"ec2-54-224-79-247.compute-1.amazonaws.com",
+				"ec2-23-20-178-1.compute-1.amazonaws.com",
+				"ec2-50-17-38-41.compute-1.amazonaws.com",
+				"ec2-54-242-104-234.compute-1.amazonaws.com",
+				"ec2-184-72-71-138.compute-1.amazonaws.com",
+				"ec2-23-20-179-205.compute-1.amazonaws.com",
+				"ec2-23-23-38-215.compute-1.amazonaws.com",
+				"ec2-54-234-243-226.compute-1.amazonaws.com",
+				"ec2-107-22-140-101.compute-1.amazonaws.com",
+				"ec2-184-73-17-54.compute-1.amazonaws.com",
+				"ec2-50-19-145-50.compute-1.amazonaws.com",
+				"ec2-50-17-63-202.compute-1.amazonaws.com",
+				"ec2-67-202-0-4.compute-1.amazonaws.com",
+				"ec2-23-22-114-64.compute-1.amazonaws.com",
+				"ec2-50-19-201-198.compute-1.amazonaws.com",
+				"ec2-54-234-119-18.compute-1.amazonaws.com",
+				"ec2-23-22-32-48.compute-1.amazonaws.com",
+				"ec2-50-17-3-246.compute-1.amazonaws.com",
+				"ec2-23-22-70-119.compute-1.amazonaws.com",
+				"ec2-107-21-138-41.compute-1.amazonaws.com",
+				"ec2-54-234-105-70.compute-1.amazonaws.com",
+				"ec2-107-21-196-120.compute-1.amazonaws.com",
+				"ec2-50-16-85-121.compute-1.amazonaws.com",
+				"ec2-23-22-34-233.compute-1.amazonaws.com",
+				"ec2-107-21-88-155.compute-1.amazonaws.com",
+				"ec2-54-235-40-247.compute-1.amazonaws.com",
+				"ec2-184-73-102-121.compute-1.amazonaws.com",
+				"ec2-54-235-0-44.compute-1.amazonaws.com",
+				"ec2-23-22-116-253.compute-1.amazonaws.com",
+				"ec2-184-73-15-160.compute-1.amazonaws.com",
+				"ec2-54-234-164-46.compute-1.amazonaws.com",
+				"ec2-54-242-98-198.compute-1.amazonaws.com",
+				"ec2-54-235-15-98.compute-1.amazonaws.com",
+				"ec2-174-129-167-38.compute-1.amazonaws.com",
+				"ec2-23-22-242-236.compute-1.amazonaws.com",
+				"ec2-54-234-78-108.compute-1.amazonaws.com",
+				"ec2-54-234-97-50.compute-1.amazonaws.com",
+				"ec2-54-242-54-244.compute-1.amazonaws.com",
+				"ec2-54-234-198-181.compute-1.amazonaws.com",
+				"ec2-54-242-27-75.compute-1.amazonaws.com",
+				"ec2-50-16-181-203.compute-1.amazonaws.com",
+				"ec2-23-22-168-7.compute-1.amazonaws.com",
+				"ec2-54-235-25-238.compute-1.amazonaws.com",
+				"ec2-54-224-79-97.compute-1.amazonaws.com",
+				"ec2-23-22-198-244.compute-1.amazonaws.com",
+				"ec2-107-20-23-99.compute-1.amazonaws.com",
+				"ec2-54-234-248-182.compute-1.amazonaws.com",
+				"ec2-50-16-70-207.compute-1.amazonaws.com",
+				"ec2-50-17-145-18.compute-1.amazonaws.com",
+				"ec2-54-242-172-103.compute-1.amazonaws.com",
+				"ec2-204-236-199-248.compute-1.amazonaws.com",
+				"ec2-54-234-171-191.compute-1.amazonaws.com",
+				"ec2-184-72-205-153.compute-1.amazonaws.com",
+				"ec2-50-16-82-171.compute-1.amazonaws.com",
+				"ec2-23-22-179-254.compute-1.amazonaws.com",
+				"ec2-23-22-228-4.compute-1.amazonaws.com",
+				"ec2-50-16-163-161.compute-1.amazonaws.com",
+				"ec2-54-234-43-125.compute-1.amazonaws.com",
+				"ec2-54-224-65-223.compute-1.amazonaws.com",
+				"ec2-174-129-134-174.compute-1.amazonaws.com",
+				"ec2-54-235-37-6.compute-1.amazonaws.com",
+				"ec2-184-73-79-198.compute-1.amazonaws.com",
+				"ec2-67-202-5-162.compute-1.amazonaws.com",
+				"ec2-107-22-134-44.compute-1.amazonaws.com",
+				"ec2-50-17-48-32.compute-1.amazonaws.com",
+				"ec2-184-73-91-161.compute-1.amazonaws.com"
+	};
+		int choice=count%(server.length);		
+		instance=server[choice];
+		
+		PostMethod method = new PostMethod("http://"+instance+"/cgi-bin/publishcluster.cgi");
+		Part[] parts = {
+			      new FilePart("xmlfile", new File(xmlfile)),
+			      new StringPart("docid", docid)
+			  };
+		method.setRequestEntity(
+			      new MultipartRequestEntity(parts, method.getParams())
+			      );
+		try {
+			int returnCode = client.executeMethod(method);
+
+			if (returnCode == HttpStatus.SC_NOT_IMPLEMENTED) {
+				System.err
+						.println("The Post method is not implemented by this URI");
+				// still consume the response body
+				method.getResponseBodyAsString();
+			} else {
+				br = new BufferedReader(new InputStreamReader(
+						method.getResponseBodyAsStream()));
+				String readLine;
+				while (((readLine = br.readLine()) != null)) {
+					System.err.println(readLine);
+				}
+			}
+		} catch (Exception e) {
+			System.err.println(e);
+		} finally {
+			method.releaseConnection();
+			if (br != null)
+				try {
+					br.close();
+				} catch (Exception fe) {
+				}
+		}
+
+		return null;
+
+	}
+    public String[] readConfig(String loc){    	
+    	File f = new File(loc);
+        ArrayList serverList = new ArrayList();
+        if(!f.exists()){
+        	System.out.println("Unable to locate the configuration file, program terminated.");
+        	System.exit(0);
+        }
+        try{
+         	  FileInputStream fstream = new FileInputStream(f);
+        	  DataInputStream in = new DataInputStream(fstream);        	  
+        	  BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        	  String strLine;
+        	  while ((strLine = br.readLine()) != null){
+        	      if(strLine.startsWith("server")){
+        	    	  StringTokenizer st = new StringTokenizer(strLine,"=");
+        	    	  while(st.hasMoreTokens()) {
+        	    		  serverList.add(st.nextToken());
+        	    	  } 
+        	      }
+        	  }
+        	  in.close();
+        }
+        catch (Exception e){
+        	  System.err.println("Error: " + e.getMessage());
+        }
+        String server[]=(String[]) serverList.toArray(new String[serverList.size()]); 
+        return server;
+    }
+	/**
+	 *         locateDoc method returns the results from the psiX
+	 */
+
+	public String locateDoc(String xmlpath, String xmldtd, String replica) {
+		// TODO Auto-generated method stub
+		ClientHttpRequest clientReq = null;
+		String output = "";
+		try {
+			/*
+			 * Httprequest to psiX website
+			 */
+			clientReq = new ClientHttpRequest(
+					"http://ec2-50-19-128-222.compute-1.amazonaws.com/cgi-bin/query.cgi");
+
+			clientReq.setParameter("xmlpath", xmlpath);
+			clientReq.setParameter("xmldtd", new File(xmldtd));
+			clientReq.setParameter("replica", replica);
+
+			InputStream input = clientReq.post();
+
+			int data = input.read();
+			while (data != -1) {
+				output = output + (char) data;
+				data = input.read();
+			}
+			input.close();
+			// System.out.println(output);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return output;
+
+	}
+
+	/**
+	 *         retrieveURLnDocID method accepts htmlText string and seperates
+	 *         url and docid , adds it to PsiXObject and then to ArrayList
+	 */
+	public ArrayList<PsiXObject> retrieveURLnDocID(String htmlText) {
+		PsiXObject psiXObject = null;
+		String token1;
+		String urlTrimmed;
+		StringTokenizer stToken1 = new StringTokenizer(htmlText);
+		StringTokenizer stToken2 = null;
+
+		String urlString;
+		ArrayList<PsiXObject> psiXObjects = new ArrayList<PsiXObject>();
+
+		while (stToken1.hasMoreElements()) {
+			token1 = stToken1.nextElement().toString();
+			if (token1.equals("/>[Docid:")) {
+				urlString = stToken1.nextElement().toString();
+				urlTrimmed = urlString.substring(0, urlString.length() - 3);
+
+				System.out.println(urlTrimmed);
+
+				stToken2 = new StringTokenizer(urlTrimmed, ":");
+
+				psiXObject = new PsiXObject();
+
+				if (stToken2.hasMoreElements() && stToken2.countTokens() == 2) {
+					psiXObject.setUrl(stToken2.nextElement().toString());
+					psiXObject.setDocId(stToken2.nextElement().toString());
+					psiXObjects.add(psiXObject);
+				}
+			}
+		}
+
+		return psiXObjects;
+	}
+	public String getFileAsString(File file) {
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		DataInputStream dis = null;
+		StringBuffer sb = new StringBuffer();
+		try {
+			fis = new FileInputStream(file);
+			bis = new BufferedInputStream(fis);
+			dis = new DataInputStream(bis);
+
+			while (dis.available() != 0) {
+				sb.append(dis.readLine() + "\n");
+			}
+			fis.close();
+			bis.close();
+			dis.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
+	}
+
+}

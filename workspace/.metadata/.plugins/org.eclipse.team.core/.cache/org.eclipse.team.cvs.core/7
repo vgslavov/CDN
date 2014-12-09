@@ -1,0 +1,32 @@
+import java.io.File;
+
+public class changeFileNames {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String path = "/home/tivakar/Desktop/Thesis/HL7/D";
+
+//		String files;
+		File folder = new File(path);
+//		File f = null;
+		File[] listOfFiles = folder.listFiles();
+
+		for (int i = 0, newname = 303; i < listOfFiles.length; i++, newname++) {
+
+			if (listOfFiles[i].isFile()) {
+
+				//files = listOfFiles[i].getName();
+
+				//f = new File(path + "/" + files);
+				listOfFiles[i].renameTo(new File(path + "/" + newname + ".xml"));
+
+			}
+		}
+
+	}
+
+}

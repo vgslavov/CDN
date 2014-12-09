@@ -1,0 +1,1 @@
+count( for $x in doc('x.xml')/ROOT/TempRoot return $x//Patient)

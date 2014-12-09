@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy package &apos;net.cdn.message&apos; to &apos;XquerySaxon/src/(default package)&apos;&#x0A;- Original project: &apos;UserInterface&apos;&#x0A;- Destination element: &apos;XquerySaxon/src/(default package)&apos;&#x0A;- Original element: &apos;UserInterface/src/net.cdn.message&apos;" description="Copy package" destination="=XquerySaxon/src&lt;" element1="/src&lt;net.cdn.message" flags="589830" fragments="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyPackages" stamp="1309110576731" version="1.0"/>
+</session>

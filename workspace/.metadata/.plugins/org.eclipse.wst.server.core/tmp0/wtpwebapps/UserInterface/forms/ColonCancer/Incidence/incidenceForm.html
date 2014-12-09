@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Incidence Form</title>
+<script>
+
+function run(){
+
+	var queryNo = $("#output_display").val();
+	$.post("CDNController",{queryNo:queryNo},
+			  function(data){
+			    
+				$("#output_display").val(data);
+		
+			  });
+				
+
+	
+}
+
+</script>
+</head>
+<body>
+	
+	<form action="net/cdn/controller/CDNController" name="incidenceForm">
+	
+		<table>
+			<tr>
+				<td colspan="2" align="left"><B> <font size="4"> Incidence Form </font></B></td>
+			</tr>
+				<tr>
+					<td colspan="2"><hr/></td>
+				</tr>
+			<tr>
+				<td>
+					Age:
+				</td>
+				<td>
+					<input type="text" id="age_lower" size="4"/> to <input type="text" id="age_upper" size="4"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Gender:
+				</td>
+				<td>
+					<input type="radio" name="gender" value="male" />Male
+					<input type="radio" name="gender" value="female" />Female
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Race:
+				</td>
+				<td>
+					<select>
+					    <option id="race" value="any">Any</option>
+						<option id="race" value="asian">Asian</option>
+						<option id="race" value="hispan">Hispan</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Stage of Cancer:
+				</td>
+				<td>
+					<select>
+						<option id="stage" value="any">Any</option>
+						<option id="stage" value="Stage IA">Stage IA</option>
+						<option id="stage" value="Stage IB">Stage IB</option>
+						<option id="stage" value="Stage IIA">Stage IIA</option>
+						<option id="stage" value="Stage IIB">Stage IIB</option>
+						<option id="stage" value="Stage IIIA">Stage IIIA</option>
+						<option id="stage" value="Stage IIIB">Stage IIIB</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Time Period :
+				</td>
+				<td>
+					<input type="text" id="time_lower" size="4"/> to <input type="text" id="time_upper" size="4"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Output :
+				</td>
+				<td>
+					<input type="checkbox" name="output" value="Count"/> Count
+				</td>
+			</tr>
+		
+			<tr>
+				<td> <br/>
+					<input type="button" id="" value="Run" onclick="run()"/>
+				</td>
+				<td>
+				
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<textarea rows="10" cols="40" id="output_display"></textarea>
+				</td>
+			</tr>
+		</table>
+	
+	
+	</form>
+
+</body>
+</html>

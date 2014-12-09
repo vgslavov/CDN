@@ -1,0 +1,165 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Collaborative Data Network</title>
+
+<link rel="stylesheet" href="lib/jquery-ui/development-bundle/themes/base/jquery.ui.all.css"> </link>
+<link rel="stylesheet" href="lib/jquery-ui/css/redmond/jquery-ui-1.8.13.custom.css"></link>	
+
+<script type="text/javascript" src="lib/jquery-ui/development-bundle/jquery-1.5.1.js"></script>
+<script type="text/javascript" src="lib/jsTree/jquery.cookie.js"></script>
+<script type="text/javascript" src="lib/jsTree/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="lib/jsTree/jquery.jstree.js"></script>
+<script src="lib/jquery-ui/development-bundle/ui/jquery.ui.core.js"></script>
+<script src="lib/jquery-ui/development-bundle/ui/jquery.ui.widget.js"></script>
+<script src="lib/jquery-ui/development-bundle/ui/jquery.ui.tabs.js"></script>
+	
+<script type="text/javascript">
+
+$(function () {
+
+	//Tabs
+	$("#tabs").tabs();
+	
+	$("#structured_queries_tree").jstree({ 
+		"json_data" : {
+			"ajax" : {
+				"url" : "_json_data.json"
+			}
+		},
+		"themes" : {
+			"theme" : "classic",
+			"dots" : false,
+			"icons" : true
+			},
+		"plugins" : [ "themes", "json_data", "ui" ]
+	})
+	.bind("select_node.jstree", function (e, data) {
+		
+		url = data.rslt.obj.attr("id");
+		
+		if(url != ""){
+			$.get(url,{},function(results){
+
+				$("#html_page").html(results);
+				
+			});
+		}
+		
+	});
+});
+
+//publish tab 
+function publish_tab(){
+	$("#structured_queries_tree").hide('fast');
+}
+
+//structured queries tab
+function structured_queries_tab(){
+	$("#structured_queries_tree").show('fast');
+}
+
+//keyword search tab
+function keyword_search_tab(){
+	$("#structured_queries_tree").hide('fast');
+}
+
+</script>
+</head>
+<body>
+
+<table width="100%" cellspacing="15">
+	<tr>
+		<td><img alt="" src="images/pic1.jpg" width="100" height="100"/></td>	
+		<td align="left"><h1>A Tool for Large scale sharing of HL7 v3 Documents</h1></td>
+		<td><img alt="" src="images/pic2.gif"/></td>
+	</tr>
+	<tr>
+		<td colspan="3"><hr/></td>
+	</tr>
+	<tr>
+		<td style="width: 200px" valign="top">
+			<div id="structured_queries_tree" class="demo" style="display: none;"></div>
+		</td>
+		<td valign="top" style="width: 60%">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1" onclick="publish_tab()">Publish HL7 v3 Documents</a></li>
+				<li><a href="#tabs-2" onclick="structured_queries_tab()"">Structured Query</a></li>
+				<li><a href="#tabs-3" onclick="keyword_search_tab()">Keyword Query</a></li>
+				<li><a href="#tabs-3" onclick="">Help</a></li>
+				<li><a href="#tabs-3" onclick="">About</a></li>
+			</ul>
+			
+			<div id="tabs-1">
+				<form action="">
+					<table>
+				
+						<tr>
+							<td>
+								Select a file:
+							</td>
+							<td align="left">
+								<input type="file" id="folder_path" value=""/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+							</td>
+							<td>
+								<input type="button" id="publish_button" value="Publish!" />
+							</td>
+						</tr>		
+					</table>
+				</form>
+			</div>
+			
+			<div id="tabs-2">	
+				<div id="html_page"></div>
+			</div>
+			
+			<div id="tabs-3">
+				<table>
+					<tr>
+						<td>
+							Select a category:
+						</td>
+						<td align="left">
+							<select>
+								<option value="AL">Allergies</option>
+								<option value="DDate">Discharge Date</option>
+								<option value="DDiag">Discharge Diagnosis</option>
+								<option value="DDisp">Discharge Disposition</option>
+								<option value="HPI">History of Present Illness</option>
+								<option value="HC">Hospital Course</option>
+								<option value="PMH">Past Medical History</option>
+								<option value="PSH">Past Surgical History</option>
+								<option value="PE">Physical Exam</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Enter keywords</td>
+						<td align="left"><input type="text" id="keywords" value=""/> </td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="button" id="search_keywords_button" value="Run"/></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+									<textarea rows="10" cols="40" id="output_display"></textarea>
+						</td>
+					</tr>
+				</table>			
+			</div>
+		</div>
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

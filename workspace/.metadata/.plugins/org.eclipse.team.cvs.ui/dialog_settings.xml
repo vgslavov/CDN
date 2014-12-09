@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.team.internal.ccvs.ui.CVSHistoryPage">
+		<item value="500;500;" key="INNER_SASH_WEIGHTS"/>
+		<item value="650;200;150;" key="SASH_WEIGHTS"/>
+	</section>
+	<section name="org.eclipse.team.internal.ccvs.ui.CVSHistoryTableProvider">
+		<item value="188" key="COL_DATE"/>
+		<item value="188" key="COL_COMMENT"/>
+		<item value="189" key="COL_TAGS"/>
+		<item value="1024" key="SORT_COL_DIRECTION"/>
+		<item value="COL_DATE" key="SORT_COL_NAME"/>
+		<item value="189" key="COL_REVISIONID"/>
+		<item value="188" key="COL_AUTHOR"/>
+	</section>
+	<section name="SharingWizard">
+		<item value="480" key="SyncPageHeight"/>
+		<item value="640" key="SyncPageWidth"/>
+	</section>
+	<section name="CommitWizard">
+		<item value="605" key="height"/>
+		<item value="false" key="ShowCompare"/>
+		<item value="400" key="width"/>
+		<item value="500" key="VWeight2"/>
+		<item value="500" key="VWeight1"/>
+	</section>
+	<section name="CheckoutAsWizard">
+	</section>
+	<section name="NewLocationWizard">
+		<list key="ConfigurationWizardMainPage.STORE_PATH_ID">
+			<item value="/home/sgtr4c/Healthcare"/>
+		</list>
+		<list key="ConfigurationWizardMainPage.STORE_HOSTNAME_ID">
+			<item value="134.193.130.6"/>
+		</list>
+		<list key="ConfigurationWizardMainPage.STORE_USERNAME_ID">
+			<item value="tk27f"/>
+		</list>
+	</section>
+	<section name="org.eclipse.team.ccvs.ui.RepositoriesView">
+		<item value="0" key="selectedOrderBy"/>
+		<item value="" key="SelectedWorkingSet"/>
+		<item value="true" key="selectedSortingOrder"/>
+		<item value="" key="filterShowModules"/>
+	</section>
+</section>

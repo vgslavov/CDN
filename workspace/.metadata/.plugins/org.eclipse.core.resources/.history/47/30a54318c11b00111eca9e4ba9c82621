@@ -1,0 +1,560 @@
+package net.cdn.functions;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+
+import com.sun.swing.internal.plaf.synth.resources.synth;
+
+import net.cdn.Objects.FLOWRObject;
+import net.cdn.Objects.XQueryObject;
+import net.cdn.message.CDNMessage;
+import net.cdn.utility.RemoveStringCharacters;
+import net.sf.saxon.Query;
+
+public class ExecuteQueryOnPeers {
+
+	private static int mergingCount = 0;
+	private static Thread parentThread = null;
+	
+	
+	//Thread
+	public ExecuteQueryOnPeers(Thread parentThread) {
+
+		ExecuteQueryOnPeers.parentThread = parentThread;
+	
+	}
+	
+	//Thread
+	/*
+	 *  Reduce mergingCount by 1 and check if mergingCount is 0
+	 *  if mergingCount is 0, notify parent thread
+	 *  
+	 */
+	public static synchronized void updateMerginCount(){
+		
+		ExecuteQueryOnPeers.mergingCount--;
+		
+		if(ExecuteQueryOnPeers.mergingCount == 0){
+			
+			ExecuteQueryOnPeers.parentThread.notify();
+			
+		}
+		
+	}
+
+
+	public void executeQueriesOnAllPeers(XQueryObject xQueryObj, int xQueryNo, String xQueryShippingFilePath) {
+
+		String variable = null;
+		String hostName = null;
+		String pathName = null;
+		String xQueryForHost = null;
+		String tempXQueryForHost = null;
+		String commonXQueryForHost = null;
+		
+		HashMap<String, ArrayList<String>> allVarArrXQueryForHost = null;
+		ArrayList<String> arrXqueryForHost = null;
+
+		String ROOT = "ROOT";
+		String TEMPROOT = "TempRoot";
+
+		// Get all xqueryshipping for all variables
+		allVarArrXQueryForHost = getXqueryShipping(xQueryNo, xQueryShippingFilePath);
+
+		int pathNameCount;
+
+		HashMap<String, ArrayList<HashMap<String, HashMap<String, String>>>> allVarAllHostAllPaths = null;
+
+		Iterator<String> iterAllVarAllHostAllPaths = null;
+		Iterator<String> iterAllHost = null;
+		Iterator<String> iterAllPath = null;
+		Iterator<HashMap<String, HashMap<String, String>>> iterAllHostAllPath = null;
+		Iterator<String> iterArrXqueryForHost = null;
+
+		FLOWRObject flowrObj = null;
+
+		HashMap<String, HashMap<String, String>> allHostallPaths = null;
+		ArrayList<HashMap<String, HashMap<String, String>>> arrayAllHostAllPaths = null;
+		HashMap<String, String> allPaths = null;
+		HashMap<String, FLOWRObject> varNFLOWRObj = null;
+
+		ArrayList<String> listOfFilesCreated = null;
+
+		MergeXMLFiles mrg = new MergeXMLFiles();
+		File file = null;
+
+		int maxXpathCount;
+
+		allVarAllHostAllPaths = xQueryObj.getVarHostPath();
+		iterAllVarAllHostAllPaths = allVarAllHostAllPaths.keySet().iterator();
+		varNFLOWRObj = xQueryObj.getFlowrObjForXQuery();
+
+		RemoveStringCharacters rmvStringChar = new RemoveStringCharacters();
+
+		maxXpathCount = 1;
+
+		while (iterAllVarAllHostAllPaths.hasNext()) {
+			variable = iterAllVarAllHostAllPaths.next();// Variable
+			arrayAllHostAllPaths = allVarAllHostAllPaths.get(variable);
+			arrXqueryForHost = allVarArrXQueryForHost.get(variable);
+
+			iterAllHostAllPath = arrayAllHostAllPaths.iterator();
+			iterArrXqueryForHost = arrXqueryForHost.iterator();
+
+			while (iterAllHostAllPath.hasNext()) {
+
+				allHostallPaths = iterAllHostAllPath.next();
+				commonXQueryForHost = iterArrXqueryForHost.next();
+
+				// flowrObj = varNFLOWRObj.get(variable);
+				file = new File(variable.replace("$", "")
+						+ ".xml");
+				try {
+					file.createNewFile();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				listOfFilesCreated = new ArrayList<String>();
+
+				try {
+					iterAllHost = allHostallPaths.keySet().iterator();
+				} catch (Exception e) {
+					iterAllHost = null;
+				}
+
+				// xQueryForHost = ;
+
+				if (iterAllHost != null) {
+					while (iterAllHost.hasNext()) {
+						xQueryForHost = "<" + ROOT + ">" + "{";
+						hostName = iterAllHost.next();// Hostname
+						allPaths = allHostallPaths.get(hostName);
+						iterAllPath = allPaths.keySet().iterator();
+
+						pathNameCount = 0;
+
+						while (iterAllPath.hasNext()) {
+							pathName = iterAllPath.next();
+							
+							tempXQueryForHost =  commonXQueryForHost;
+							
+							tempXQueryForHost = tempXQueryForHost.replace(
+									"collection(\"CDN\")",
+									"doc(\""
+											+ rmvStringChar
+													.removeFirstOccurenceIf(
+															pathName, "/")
+											+ "\")");
+							tempXQueryForHost = tempXQueryForHost.replace(variable, variable + pathNameCount);
+							
+							xQueryForHost = xQueryForHost + tempXQueryForHost;
+							
+							if (iterAllPath.hasNext()) {
+								xQueryForHost = xQueryForHost + ",";
+
+							}
+							
+							pathNameCount++;
+						}
+
+						xQueryForHost = xQueryForHost + "}" + "</" + ROOT + ">";
+							// // when return statement is present
+							// if (flowrObj.getsReturn() != null) {
+							// xQueryForHost = xQueryForHost
+							// + " "
+							// + "for"
+							// + " "
+							// + variable
+							// + pathNameCount
+							// + " "
+							// + "in"
+							// + " "
+							// + "doc(\""
+							// + rmvStringChar.removeFirstOccurenceIf(
+							// pathName, "/") + "\")"
+							// + flowrObj.getsFor();
+							// if (flowrObj.getsWhere() != null) {
+							// xQueryForHost = xQueryForHost
+							// + " "
+							// + flowrObj.getsWhere().replace(
+							// variable,
+							// variable + pathNameCount);
+							// }
+							//
+							// xQueryForHost = xQueryForHost
+							// + " "
+							// + "return"
+							// + " "
+							// + "<"
+							// + TEMPROOT
+							// + ">"
+							// + " "
+							// + flowrObj.getsReturn().replace(variable,
+							// variable + pathNameCount);
+							//
+							// xQueryForHost = xQueryForHost + "</" + TEMPROOT
+							// + ">";
+							//
+							// if (iterAllPath.hasNext()) {
+							// xQueryForHost = xQueryForHost + ",";
+							//
+							// }
+							// }
+							// pathNameCount++;
+							// }
+							//
+							// xQueryForHost = xQueryForHost + "}" + "</" + ROOT
+							// + ">";
+
+							try {
+								file = new File(variable.replace("$",
+										maxXpathCount + "") + hostName + ".xml");
+								BufferedWriter out = new BufferedWriter(
+										new FileWriter(file.getAbsolutePath()));
+								out.write(executeQueriesOnPeer(hostName,
+										xQueryForHost));
+								out.close();
+								listOfFilesCreated
+										.add(variable.replace("$",
+												maxXpathCount + "")
+												+ hostName
+												+ ".xml");
+							} catch (IOException e) {
+								System.out
+										.println("Exception" + e.getMessage());
+							}
+
+							Iterator<String> iterListOfFilesCreated = listOfFilesCreated
+									.iterator();
+
+							while (iterListOfFilesCreated.hasNext()) {
+
+								mrg.mergeTwoFiles(
+										"ROOT",
+										variable.replace("$", "")
+												+ ".xml",
+										(String) iterListOfFilesCreated.next(),
+										variable.replace("$", "") + ".xml");
+								if (file != null && file.exists()) {
+									if (file.delete()){
+										System.out.println("** Deleted ");
+									}
+									else{
+										System.out.println("Failed to delete");
+									}
+
+								}
+							}
+							listOfFilesCreated.clear();
+//							System.out.println("");
+						}
+					}
+				}
+			}
+			maxXpathCount++;
+		}
+	
+
+	public String executeQueriesOnPeer(String hostUrl, String xQuery) {
+
+		// HttpClient httpclient = new DefaultHttpClient();
+
+		String output = "";
+		StringBuilder outputBuilder = new StringBuilder(output);
+
+		System.out.println("############################################");
+		System.out.println("# XQuery for Host <<< " + hostUrl + " >>> #");
+		System.out.println("############################################");
+		System.out.println("");
+		System.out.println(xQuery);
+		System.out.println("");
+
+		try {
+			//
+			// List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+			// formparams.add(new BasicNameValuePair("xquery", xQuery));
+			// UrlEncodedFormEntity entity = new
+			// UrlEncodedFormEntity(formparams, "UTF-8");
+			// HttpPost httppost = new HttpPost("http://" + hostUrl +
+			// "/XquerySaxon/Xquery");
+			// httppost.setEntity(entity);
+			//
+			// ResponseHandler<byte[]> handler = new ResponseHandler<byte[]>() {
+			// public byte[] handleResponse(
+			// HttpResponse response) throws ClientProtocolException,
+			// IOException {
+			// HttpEntity entity = response.getEntity();
+			// if (entity != null) {
+			// return EntityUtils.toByteArray(entity);
+			// } else {
+			// return null;
+			// }
+			// }
+			// };
+			//
+			// byte[] response = httpclient.execute(httppost, handler);
+			//
+			// output = new String(response);
+
+			// servlet URL
+			URL url = new URL("http://" + hostUrl + ":8080/XquerySaxon/Xquery");
+
+			// open a connection to the servlet
+			URLConnection servletConnection = url.openConnection();
+
+			// prepare for both input and output
+			servletConnection.setDoInput(true);
+			servletConnection.setDoOutput(true);
+
+			// don't use a cached version of URL connection
+			servletConnection.setUseCaches(false);
+			servletConnection.setDefaultUseCaches(false);
+
+			// set the content type to indicate that we're sending binary data
+			servletConnection.setRequestProperty("Content-Type",
+					"application/x-java-serialized-object");
+
+			// String input = "vettri pettraan";
+
+			CDNMessage cdnMsg = new CDNMessage();
+			CDNMessage cdnMsgOutput = null;
+
+			cdnMsg.setMessage(xQuery);
+
+			// XQueryReturnObject data_in = new XQueryReturnObject();
+			// data_in.setName("vettri");
+			// Object here = (Object) data_in;
+
+			Object sendCdnMsg = (Object) cdnMsg;
+
+			// create an output stream
+			OutputStream out = servletConnection.getOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(out);
+
+			// write the serialized data object to the output stream
+			oos.writeObject(sendCdnMsg);
+			oos.flush();
+			oos.close();
+
+			// get input streams on servlet
+			InputStream is = servletConnection.getInputStream();
+			ObjectInputStream ois = null;
+
+//			System.out.println("Content length!!"
+//					+ servletConnection.getContentLength());
+
+			// if (servletConnection.getContentLength() > 0) {
+
+			int c;
+			// int i = servletConnection.getContentLength();
+//			while (((c = is.read()) != -1)) {
+//
+//				outputBuilder.append((char) c);
+//				// System.out.print((char) c);
+//			}
+//			is.close();
+//			// }
+//
+//			output = outputBuilder.toString();
+
+			// create an object input stream
+		    ois = new ObjectInputStream(is);
+		    cdnMsgOutput = (CDNMessage)ois.readObject();
+			
+		    output = (String)cdnMsgOutput.getMessage();
+		    
+			System.out.println("############ <<< OUTPUT >>> #############");
+			System.out.println(output);
+			System.out.println("");
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return output;
+
+	}
+
+	public String executeQueryLocal(XQueryObject xQueryObj, int xQueryNo, String xQueryLocalFilePath) {
+
+//		Xq2MaximalXp xq2MaxXpath = new Xq2MaximalXp();
+//		ArrayList<String> xQuerySplits = xq2MaxXpath.getEachLines(xQueryObj);
+//		HashMap<String, String> hMapVarNMaxXPath = xQueryObj
+//				.gethMapVarNMaxXpath();
+//		Iterator<String> vars = hMapVarNMaxXPath.keySet().iterator();
+		FileWriter fWriter = null;
+		BufferedWriter bWriter = null;
+		File file = null;
+		String localXQuery = "";
+		
+//		String temp = null;
+//		String variable = null;
+//
+//		while (vars.hasNext()) {
+//			variable = vars.next();
+//			localXQuery = localXQuery + " " + "for" + " " + variable + " "
+//					+ "in" + " " + "doc('" + variable.replace("$", "") + ".xml"
+//					+ "')" + "/ROOT/TempRoot";
+//		}
+//		Iterator<String> arrayXQuerySplits = xQuerySplits.iterator();
+//
+//		while (arrayXQuerySplits.hasNext()) {
+//			temp = arrayXQuerySplits.next();
+//			if (!temp.contains("for")) {
+//				localXQuery = localXQuery + " " + temp;
+//			}
+//		}
+//
+//		localXQuery = "count(" + localXQuery + ")";
+
+		localXQuery = getLocalQuery(xQueryNo, xQueryLocalFilePath);
+		
+		try {
+			file = new File("query.txt");
+			file.createNewFile();
+			fWriter = new FileWriter("query.txt");
+			bWriter = new BufferedWriter(fWriter);
+
+			bWriter.write(localXQuery);
+			bWriter.close();
+			fWriter.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String[] args = { "-q:" + "query.txt", "-o:" + "tivakar.txt" };
+
+		Query saxon = new Query();
+
+		System.out.println("################");
+		System.out.println("# Local XQuery #");
+		System.out.println("################");
+		System.out.println("");
+		System.out.println(localXQuery);
+		System.out.println("");
+		System.out.println("##### <<< Final Output >>> ####");
+		saxon.doQuery(args, "java net.sf.saxon.Query");
+
+		return null;
+
+	}
+
+	public HashMap<String, ArrayList<String>> getXqueryShipping(int xQueryNo,String xQueryShippingFilePath) {
+
+		ArrayList<String> arrXqueryForHost = null;
+		HashMap<String, ArrayList<String>> allVarArrXqueryForHost = null;
+
+		String strLine = null;
+		String variable = null;
+		String xQueryForHost = null;
+
+		FileInputStream fstream = null;
+		DataInputStream in = null;
+		BufferedReader br = null;
+
+		StringTokenizer strTzr1 = null;
+		StringTokenizer strTzr2 = null;
+
+		int lineCount = 1;
+
+		try {
+			// Open the file that is the first
+			// command line parameter
+			fstream = new FileInputStream(xQueryShippingFilePath);
+			// Get the object of DataInputStream
+			in = new DataInputStream(fstream);
+			br = new BufferedReader(new InputStreamReader(in));
+
+			// Read File Line By Line
+			while (((strLine = br.readLine()) != null) && lineCount != xQueryNo) {
+				lineCount++;
+			}
+
+			// Close the input stream
+			in.close();
+
+		} catch (Exception e) {// Catch exception if any
+			System.err.println("Error: " + e.getMessage());
+		}
+
+		strTzr1 = new StringTokenizer(strLine, "##");
+
+		allVarArrXqueryForHost = new HashMap<String, ArrayList<String>>();
+
+		while (strTzr1.hasMoreTokens()) {
+			strTzr2 = new StringTokenizer(strTzr1.nextToken(), "::");
+
+			while (strTzr2.hasMoreTokens()) {
+
+				variable = strTzr2.nextToken();
+				xQueryForHost = strTzr2.nextToken();
+
+				arrXqueryForHost = allVarArrXqueryForHost.get(variable);
+
+				if (arrXqueryForHost == null || arrXqueryForHost.size() == 0) {
+					arrXqueryForHost = new ArrayList<String>();
+				}
+
+				arrXqueryForHost.add(xQueryForHost);
+				allVarArrXqueryForHost.put(variable, arrXqueryForHost);
+
+			}
+
+		}
+		return allVarArrXqueryForHost;
+	}
+	
+	public String getLocalQuery(int xQueryNo, String xQueryFilePath) {
+
+		String strLine = null;
+		FileInputStream fstream = null;
+		DataInputStream in = null;
+		BufferedReader br = null;
+
+		int lineCount = 1;
+
+		try {
+			// Open the file that is the first
+			// command line parameter
+			fstream = new FileInputStream(xQueryFilePath);
+			// Get the object of DataInputStream
+			in = new DataInputStream(fstream);
+			br = new BufferedReader(new InputStreamReader(in));
+
+			// Read File Line By Line
+			while (((strLine = br.readLine()) != null) && lineCount != xQueryNo) {
+				lineCount++;
+			}
+
+			// Close the input stream
+			in.close();
+
+		} catch (Exception e) {// Catch exception if any
+			System.err.println("Error: " + e.getMessage());
+		}
+
+		return strLine;
+
+	}
+	
+	
+}

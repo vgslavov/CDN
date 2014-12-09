@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;saxon9he.jar&apos; to &apos;lib&apos;&#x0A;- Original project: &apos;asd&apos;&#x0A;- Destination element: &apos;lib&apos;&#x0A;- Original element: &apos;saxon9he.jar&apos;" description="Copy file" element1="WebContent/WEB-INF/lib/saxon9he.jar" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1302707923769" target="/XquerySaxon/WebContent/WEB-INF/lib" units="0" version="1.0"/>
+</session>
