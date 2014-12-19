@@ -16,3 +16,11 @@ Documents Modeled Using HL7 Version 3
 Standard.](http://dl.acm.org/citation.cfm?doid=2110363.2110417)"
 *Proceedings of the 2nd ACM International Health Informatics Symposium*
 (**IHI 2012**), Miami, FL, Jan 2012.
+
+Acknowledgments
+---------------
+This work was supported in part by the National Science
+Foundation Grant No. 1115871, University of Missouri Research
+Board, and Amazon Web Services (AWS) in Education Research
+Grant.
+
